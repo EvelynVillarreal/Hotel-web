@@ -1,0 +1,138 @@
+@startuml
+
+package hotel.config {
+    class DatabaseConnection {
+        - {static} URL: String
+        - {static} USER: String
+        - {static} PASSWORD: String
+        + {static} getConnection(): Connection
+        + {static} main(args: String[]): void
+    }
+}
+
+package hotel.model {
+class Cliente {
+    - idCliente: int
+    - nombre: String
+    - apellido: String
+    - dni: String
+    - email: String
+    - telefono: String
+    + Cliente()
+    + Cliente(idCliente: int, nombre: String, apellido: String, dni: String, email: String, telefono: String)
+    + getIdCliente(): int
+    + setIdCliente(idCliente: int): void
+    + getNombre(): String
+    + setNombre(nombre: String): void
+    + getApellido(): String
+    + setApellido(apellido: String): void
+    + getDni(): String
+    + setDni(dni: String): void
+    + getEmail(): String
+    + setEmail(email: String): void
+    + getTelefono(): String
+    + setTelefono(telefono: String): void
+}
+
+class TipoHabitacion {
+    - idTipo: int
+    - nombre: String
+    - precioBase: double
+    - capacidad: int
+    + TipoHabitacion()
+    + TipoHabitacion(idTipo: int, nombre: String, precioBase: double, capacidad: int)
+    + getIdTipo(): int
+    + setIdTipo(idTipo: int): void
+    + getNombre(): String
+    + setNombre(nombre: String): void
+    + getPrecioBase(): double
+    + setPrecioBase(precioBase: double): void
+    + getCapacidad(): int
+    + setCapacidad(capacidad: int): void
+}
+
+class Habitacion {
+    - idHabitacion: int
+    - numero: String
+    - tipo: TipoHabitacion
+    - estado: String
+    + Habitacion()
+    + Habitacion(idHabitacion: int, numero: String, tipo: TipoHabitacion, estado: String)
+    + getIdHabitacion(): int
+    + setIdHabitacion(idHabitacion: int): void
+    + getNumero(): String
+    + setNumero(numero: String): void
+    + getTipo(): TipoHabitacion
+    + setTipo(tipo: TipoHabitacion): void
+    + getEstado(): String
+    + setEstado(estado: String): void
+}
+
+class Reserva {
+    - idReserva: int
+    - cliente: Cliente
+    - habitacion: Habitacion
+    - fechaEntrada: Date
+    - fechaSalida: Date
+    - estado: String
+    + Reserva()
+    + Reserva(idReserva: int, cliente: Cliente, habitacion: Habitacion, fechaEntrada: Date, fechaSalida: Date, estado: String)
+    + getIdReserva(): int
+    + setIdReserva(idReserva: int): void
+    + getCliente(): Cliente
+    + setCliente(cliente: Cliente): void
+    + getHabitacion(): Habitacion
+    + setHabitacion(habitacion: Habitacion): void
+    + getFechaEntrada(): Date
+    + setFechaEntrada(fechaEntrada: Date): void
+    + getFechaSalida(): Date
+    + setFechaSalida(fechaSalida: Date): void
+    + getEstado(): String
+    + setEstado(estado: String): void
+}
+
+class Servicio {
+    - idServicio: int
+    - descripcion: String
+    - precio: double
+    + Servicio()
+    + Servicio(idServicio: int, descripcion: String, precio: double)
+    + getIdServicio(): int
+    + setIdServicio(idServicio: int): void
+    + getDescripcion(): String
+    + setDescripcion(descripcion: String): void
+    + getPrecio(): double
+    + setPrecio(precio: double): void
+}
+
+class Gasto {
+    - idGasto: int
+    - reserva: Reserva
+    - servicio: Servicio
+    - cantidad: int
+    - total: double
+    - fecha: Date
+    + Gasto()
+    + Gasto(idGasto: int, reserva: Reserva, servicio: Servicio, cantidad: int, total: double, fecha: Date)
+    + getIdGasto(): int
+    + setIdGasto(idGasto: int): void
+    + getReserva(): Reserva
+    + setReserva(reserva: Reserva): void
+    + getServicio(): Servicio
+    + setServicio(servicio: Servicio): void
+    + getCantidad(): int
+    + setCantidad(cantidad: int): void
+    + getTotal(): double
+    + setTotal(total: double): void
+    + getFecha(): Date
+    + setFecha(fecha: Date): void
+}
+
+Cliente "1" -- "0..*" Reserva : realiza >
+Habitacion "1" -- "0..*" Reserva : está en <
+TipoHabitacion "1" -- "0..*" Habitacion : clasifica >
+Reserva "1" -- "0..*" Gasto : genera >
+Servicio "1" -- "0..*" Gasto : detalle >
+}
+
+@enduml
