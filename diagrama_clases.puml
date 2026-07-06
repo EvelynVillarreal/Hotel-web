@@ -6,9 +6,57 @@ package hotel.config {
         - {static} USER: String
         - {static} PASSWORD: String
         + {static} getConnection(): Connection
-        + {static} main(args: String[]): void
     }
 }
+
+package hotel.dao {
+    class ClienteDAO {
+        + insertar(cliente: Cliente): boolean
+        + listarTodos(): List<Cliente>
+    }
+    class TipoHabitacionDAO {
+        + listarTodos(): List<TipoHabitacion>
+    }
+    class HabitacionDAO {
+        + insertar(h: Habitacion): boolean
+        + listarTodos(): List<Habitacion>
+    }
+    class ReservaDAO {
+        + insertar(r: Reserva): boolean
+        + listarTodos(): List<Reserva>
+    }
+    class ServicioDAO {
+        + listarTodos(): List<Servicio>
+    }
+    class GastoDAO {
+        + insertar(g: Gasto): boolean
+        + listarTodos(): List<Gasto>
+    }
+}
+
+package hotel.controller {
+    class ClienteServlet {
+        + doGet(req, resp): void
+        + doPost(req, resp): void
+    }
+    class HabitacionServlet {
+        + doGet(req, resp): void
+        + doPost(req, resp): void
+    }
+    class ReservaServlet {
+        + doGet(req, resp): void
+        + doPost(req, resp): void
+    }
+    class ServicioServlet {
+        + doGet(req, resp): void
+        + doPost(req, resp): void
+    }
+}
+
+hotel.controller ..> hotel.dao : usa
+hotel.dao ..> hotel.config : usa
+hotel.dao ..> hotel.model : gestiona
+
 
 package hotel.model {
 class Cliente {
