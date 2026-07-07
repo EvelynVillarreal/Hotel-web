@@ -1,21 +1,26 @@
 package hotel.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import hotel.config.DatabaseConnection;
+import hotel.model.Cliente;
 import hotel.model.Gasto;
 import hotel.model.Reserva;
 import hotel.model.Servicio;
-import hotel.model.Cliente;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GastoDAO {
     
     public boolean insertar(Gasto g) {
         String sql = "INSERT INTO gastos (reserva_id, servicio_id, cantidad, total) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-             
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
             stmt.setInt(1, g.getReserva().getIdReserva());
             stmt.setInt(2, g.getServicio().getIdServicio());
             stmt.setInt(3, g.getCantidad());
@@ -31,18 +36,18 @@ public class GastoDAO {
     public List<Gasto> listarTodos() {
         List<Gasto> lista = new ArrayList<>();
         String sql = "SELECT g.id_gasto, g.cantidad, g.total, g.fecha, " +
-                     "s.id_servicio, s.descripcion, " +
-                     "r.id_reserva, " +
-                     "c.nombre AS cliente_nombre, c.apellido " +
-                     "FROM gastos g " +
-                     "JOIN servicios s ON g.servicio_id = s.id_servicio " +
-                     "JOIN reservas r ON g.reserva_id = r.id_reserva " +
-                     "JOIN clientes c ON r.cliente_id = c.id_cliente " +
-                     "ORDER BY g.id_gasto DESC";
+                    "s.id_servicio, s.descripcion, " +
+                    "r.id_reserva, " +
+                    "c.nombre AS cliente_nombre, c.apellido " +
+                    "FROM gastos g " +
+                    "JOIN servicios s ON g.servicio_id = s.id_servicio " +
+                    "JOIN reservas r ON g.reserva_id = r.id_reserva " +
+                    "JOIN clientes c ON r.cliente_id = c.id_cliente " +
+                    "ORDER BY g.id_gasto DESC";
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-             
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+            
             while (rs.next()) {
                 Servicio s = new Servicio();
                 s.setIdServicio(rs.getInt("id_servicio"));
